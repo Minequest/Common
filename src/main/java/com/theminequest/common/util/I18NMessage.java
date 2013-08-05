@@ -100,7 +100,7 @@ public class I18NMessage {
 		 * @return Translated string
 		 */
 		public String tr(String translate, Object... input) {
-			String touse = localeprops.getChatString(translate);
+			String touse = localeprops.getChatString(translate, translate);
 			if (customprops.containsKey(translate))
 				touse = customprops.getChatString(translate);
 			
