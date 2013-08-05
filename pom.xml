@@ -6,6 +6,25 @@
 	<version>3.0.0-SNAPSHOT</version>
 	<name>Common Implementation + API for MineQuest</name>
 	<description>This provides the common classes for the MineQuest official implementation of the API.</description>
+
+	<profiles>
+		<profile>
+			<id>snapshot</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<build.version>${project.version}</build.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>ci</id>
+			<properties>
+				<build.version>3.0.${build.number}</build.version>
+			</properties>
+		</profile>
+	</profiles>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.theminequest</groupId>
@@ -18,7 +37,7 @@
 			<version>2.2.4</version>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<finalName>MineQuest-Common</finalName>
 		<defaultGoal>clean package javadoc:javadoc javadoc:jar install</defaultGoal>
@@ -42,7 +61,7 @@
 				</includes>
 			</resource>
 		</resources>
-		
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -89,7 +108,7 @@
 					</includes>
 				</configuration>
 			</plugin>
-			
+
 		</plugins>
 	</build>
 </project>
