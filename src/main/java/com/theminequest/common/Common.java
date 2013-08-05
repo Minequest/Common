@@ -31,15 +31,11 @@ public class Common {
 	private static Common COMMON = null;
 	
 	public static Common getCommon() {
-		if (COMMON == null)
-			resetCommon();
 		return COMMON;
 	}
 	
-	public static void resetCommon() {
-		if (COMMON != null)
-			COMMON.stopCommon();
-		COMMON = new Common();
+	public static void setCommon(Common common) {
+		COMMON = common;
 	}
 	
 	private Properties attributes;
@@ -73,6 +69,7 @@ public class Common {
 	
 	public void stopCommon() {
 		events.dismantleRunnable();
+		COMMON = null;
 	}
 	
 }
