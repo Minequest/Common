@@ -36,7 +36,7 @@ import com.theminequest.common.Common;
 public class I18NMessage {
 	
 	private static final String LOCATION = Managers.getPlatform().getResourceDirectory().getAbsolutePath() + File.separator + "locales";
-	private static final String CUSTOM = I18NMessage.LOCATION + File.separator + "custom.json";
+	private static final String CUSTOM = I18NMessage.LOCATION + File.separator + "custom.properties";
 	private static final Locale LOCALE = new Locale(Managers.getPlatform().getConfigurationFile().getString("locale", "en_US"));
 	
 	public static Locale getLocale() {
@@ -72,7 +72,7 @@ public class I18NMessage {
 				localedir.mkdirs();
 			}
 			
-			File localefile = new File(I18NMessage.LOCATION + File.separator + localename + ".dict");
+			File localefile = new File(I18NMessage.LOCATION + File.separator + localename + ".properties");
 			if (!localefile.exists())
 				copyFromJar(localefile, localename);
 			else {
