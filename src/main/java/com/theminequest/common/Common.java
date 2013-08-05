@@ -37,7 +37,8 @@ public class Common {
 	}
 	
 	public static void resetCommon() {
-		COMMON.stopCommon();
+		if (COMMON != null)
+			COMMON.stopCommon();
 		COMMON = new Common();
 	}
 	
