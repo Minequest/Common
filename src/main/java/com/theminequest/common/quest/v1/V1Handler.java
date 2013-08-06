@@ -135,14 +135,14 @@ public class V1Handler implements QuestHandler<V1Parser> {
 			
 			while (fileReader.hasNextLine()) {
 				line++;
-				String nextline = new String(fileReader.nextLine().getBytes("UTF-8"), "UTF-8");
-				if (nextline.startsWith("#")) // ignore and continue
+				String nextline = new String(fileReader.nextLine().getBytes("UTF-8"), "UTF-8").trim();
+				if (nextline.startsWith("#") || nextline.isEmpty()) // ignore and continue
 					continue;
 				
 				List<String> ar = new ArrayList<String>();
 				for (String s : nextline.split(":"))
 					ar.add(s);
-				String type = ar.remove(0);
+				String type = ar.remove(0).trim();
 				
 				if (!hasParser(type)) {
 					Managers.log(Level.WARNING, "[Common|V1Handler] Unable to handle " + type + " at " + questFile.getName() + ":" + line + ".");

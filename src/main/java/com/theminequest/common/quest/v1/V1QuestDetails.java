@@ -55,7 +55,7 @@ public class V1QuestDetails extends CommonQuestDetails {
 	public V1QuestDetails(File questFile) {
 		super();
 		setProperty(QuestDetails.QUEST_FILE, questFile);
-		setProperty(QuestDetails.QUEST_NAME, questFile.getName());
+		setProperty(QuestDetails.QUEST_NAME, questFile.getName().substring(0, questFile.getName().indexOf(".quest")));
 		// DEFAULTS start
 		setProperty(QuestDetails.QUEST_DISPLAYNAME, questFile.getName());
 		setProperty(QuestDetails.QUEST_DESCRIPTION, _("No description provided..."));
@@ -78,7 +78,7 @@ public class V1QuestDetails extends CommonQuestDetails {
 		setProperty(QuestDetails.QUEST_TASKS, new HashMap<Integer, Integer[]>(0));
 		setProperty(QuestDetails.QUEST_EVENTS, new HashMap<Integer, String>(0));
 		
-		setProperty(QuestDetails.QUEST_WORLDFLAGS, false);
+		setProperty(QuestDetails.QUEST_WORLDFLAGS, 0);
 		setProperty(QuestDetails.QUEST_REQUIREMENTDETAILS, new HashMap<Integer, QuestRequirement>());
 		setProperty(QuestDetails.QUEST_GETREQUIREMENTS, new LinkedList<Integer>());
 		setProperty(QuestDetails.QUEST_STARTREQUIREMENTS, new LinkedList<Integer>());

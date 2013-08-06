@@ -1,18 +1,20 @@
 /*
- * This file is part of Common Implementation + API for MineQuest, This provides the common classes for the MineQuest official implementation of the API..
- * Common Implementation + API for MineQuest is licensed under GNU General Public License v3.
+ * This file is part of Common Implementation + API for MineQuest, This provides
+ * the common classes for the MineQuest official implementation of the API..
+ * Common Implementation + API for MineQuest is licensed under GNU General
+ * Public License v3.
  * Copyright (C) The MineQuest Team
- *
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -89,25 +91,31 @@ public class ExceptionHandler {
 			
 		});
 		
+		File reportLocFile = new File(reportLoc);
+		reportLocFile.mkdirs();
+		
 		init = true;
 	}
 	
 	public static Runnable report(final Map<String, String> reports) {
 		return new Runnable() {
-
+			
 			@Override
 			public void run() {
-
-				// Save locally first.				
+				
+				// Save locally first.
 				String location = reportLoc + File.separator + System.currentTimeMillis() + ".log";
 				File reportFile = new File(location);
 				Gson gson = new GsonBuilder().enableComplexMapKeySerialization().setPrettyPrinting().create();
 				
-				try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(reportFile)))) {
-					writer.println(gson.toJson(reports));
-					Managers.logf(Level.SEVERE, "Unhandled Exception occurred. Log at %s.", location);
-				} catch (IOException e) {
-					Managers.logf(Level.SEVERE, "Unhandled Exception occurred. Logging failed: %s.", e);
+				try {
+					reportFile.createNewFile();
+					try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(reportFile)))) {
+						writer.println(gson.toJson(reports));
+						Managers.logf(Level.SEVERE, "Unhandled Exception occurred. Log at %s.", location);
+					}
+				} catch (IOException e1) {
+					Managers.logf(Level.SEVERE, "Unhandled Exception occurred. Logging failed: %s.", e1);
 					Managers.logf(Level.SEVERE, "Unhandled Exception:\n%s\n", gson.toJson(reports));
 				}
 				
