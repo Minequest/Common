@@ -1,18 +1,20 @@
 /*
- * This file is part of Common Implementation + API for MineQuest, This provides the common classes for the MineQuest official implementation of the API..
- * Common Implementation + API for MineQuest is licensed under GNU General Public License v3.
+ * This file is part of Common Implementation + API for MineQuest, This provides
+ * the common classes for the MineQuest official implementation of the API..
+ * Common Implementation + API for MineQuest is licensed under GNU General
+ * Public License v3.
  * Copyright (C) The MineQuest Team
- *
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,6 +22,7 @@ package com.theminequest.common.quest.v1;
 
 import static com.theminequest.common.util.I18NMessage._;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,7 +60,7 @@ public class V1Task implements QuestTask {
 	private Map<Integer, QuestEvent> questEvents;
 	private Collection<Integer> calledEvents;
 	
-	private Object lock;
+	private transient Object lock;
 	private volatile boolean done;
 	
 	/**
@@ -223,6 +226,11 @@ public class V1Task implements QuestTask {
 		done = true;
 		for (QuestEvent e : questEvents.values())
 			e.complete(CompleteStatus.CANCELED);
+	}
+	
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		lock = new Object();
 	}
 	
 }
