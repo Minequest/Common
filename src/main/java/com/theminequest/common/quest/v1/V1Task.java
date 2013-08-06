@@ -190,8 +190,9 @@ public class V1Task implements QuestTask {
 			// Possible better way to do this?
 			Iterator<Integer> iter = running.iterator();
 			while (iter.hasNext()) {
-				if (questEvents.get(iter.next()).equals(event)) {
-					iter.remove();
+				int next = iter.next();
+				if (questEvents.get(next).equals(event)) {
+					running.remove(next);
 					break;
 				}
 			}
