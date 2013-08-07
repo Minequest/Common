@@ -54,15 +54,12 @@ public class V1Quest implements Quest {
 	private QuestTask activeTask;
 	
 	private String questOwner;
-	
-	private boolean initialized;
-	
+		
 	protected V1Quest(long questid, QuestDetails id, String questOwner) {
 		details = id;
 		this.questid = questid;
 		activeTask = null;
 		this.questOwner = questOwner;
-		initialized = false;
 		
 		// load the world if necessary/move team to team leader
 		String world = details.getProperty(QuestDetails.QUEST_WORLD);
@@ -109,19 +106,13 @@ public class V1Quest implements Quest {
 		if (details.getProperty(V1QuestDetails.V1_OLDSTYLETASK) != null)
 			detailsToggle = details.getProperty(V1QuestDetails.V1_OLDSTYLETASK);
 		
-		// well, this is slightly hacky.
-		if (!initialized && detailsToggle) {
-			activeTask = new V1Task(this, taskid, null, null);
-			activeTask.start();
-			initialized = true;
-		}
-		
 		if (!tasks.containsKey(taskid)) {
 			Managers.logf(Level.SEVERE, "[Common|V1Quest] Starting task %s failed for %s/%s!", taskid, getQuestOwner(), getDetails().getProperty(QuestDetails.QUEST_NAME));
 			finishQuest(CompleteStatus.ERROR);
 			return;
 		}
-		if (activeTask != null) {
+		
+		if (activeTask != null && !detailsToggle) {
 			if (activeTask.isComplete() == null)
 				activeTask.cancelTask();
 			
@@ -168,6 +159,8 @@ public class V1Quest implements Quest {
 		
 		GroupManager qGM = Managers.getGroupManager();
 		Group g = qGM.get(this);
+		
+		Managers.getQuestManager().completeQuest(this);
 		
 		QuestCompleteEvent event = new QuestCompleteEvent(this, c, g);
 		Managers.getPlatform().callEvent(event);

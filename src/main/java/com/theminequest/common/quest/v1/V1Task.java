@@ -60,8 +60,9 @@ public class V1Task implements QuestTask {
 	private Map<Integer, QuestEvent> questEvents;
 	private Collection<Integer> calledEvents;
 	
+	private V1Task successor;
+	
 	private transient Object lock;
-	private volatile boolean done;
 	
 	/**
 	 * Initialize a new V1Task.
@@ -82,11 +83,13 @@ public class V1Task implements QuestTask {
 		this.taskid = taskid;
 		this.calledEvents = events;
 		this.lock = new Object();
-		this.done = false;
-		if (lastTask != null)
+		if (lastTask != null) {
 			questEvents = lastTask.questEvents;
-		else
+			lastTask.successor = this;
+		} else
 			questEvents = null;
+		
+		this.successor = null;
 	}
 	
 	@Override
@@ -188,6 +191,10 @@ public class V1Task implements QuestTask {
 	@Override
 	public void completeEvent(QuestEvent event, CompleteStatus status, int nextTask) {
 		synchronized (lock) {
+			if (successor != null) {
+				successor.completeEvent(event, status, nextTask);
+				return;
+			}
 			CopyOnWriteArraySet<Integer> running = quest.getDetails().getProperty(V1QuestDetails.V1_OLDSTYLERUNNING);
 			
 			// Possible better way to do this?
@@ -202,17 +209,11 @@ public class V1Task implements QuestTask {
 			
 			Common.getCommon().getV1EventManager().deregisterEventListener(event);
 			
-			if (done)
-				return;
-			
-			done = true;
-			
 			if (status == CompleteStatus.FAIL || status == CompleteStatus.ERROR) {
 				quest.completeTask(this, status, -1);
 			} else if (status == CompleteStatus.SUCCESS || status == CompleteStatus.WARNING) {
 				if (nextTask != -2) {
 					// quest.getActiveTask().cancelTask(); (not for V1Task)
-					
 					quest.startTask(nextTask);
 				}// else (not for V1Task)
 					// quest.getActiveTask().checkTasks();
@@ -223,7 +224,10 @@ public class V1Task implements QuestTask {
 	@Override
 	public void cancelTask() {
 		// Called from Quest. All events need to stop, drop.
-		done = true;
+		if (successor != null) {
+			successor.cancelTask();
+			return;
+		}
 		for (QuestEvent e : questEvents.values())
 			e.complete(CompleteStatus.CANCELED);
 	}
