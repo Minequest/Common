@@ -78,6 +78,7 @@ public class V1EventManager implements EventManager {
 		addEvent(HealthEvent.class);
 		addEvent(MessageEvent.class);
 		addEvent(NameEvent.class);
+		addEvent(QuestEvent.class);
 		addEvent(QuestGiveEvent.class);
 		addEvent(QuestStartEvent.class);
 		addEvent(RequirementEvent.class);
