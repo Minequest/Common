@@ -57,6 +57,11 @@ public class MutableQuestDetails implements QuestDetails {
 	}
 	
 	@Override
+	public int hashCode() {
+		return quest.hashCode();
+	}
+
+	@Override
 	public int compareTo(QuestDetails arg0) {
 		return details.compareTo(arg0);
 	}

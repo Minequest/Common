@@ -36,6 +36,17 @@ public abstract class CommonQuestDetails implements QuestDetails {
 	}
 	
 	@Override
+	public boolean equals(Object obj) {
+		CommonQuestDetails d = (CommonQuestDetails) obj;
+		return details.get(QUEST_NAME).equals(d.details.get(QUEST_NAME));
+	}
+
+	@Override
+	public int hashCode() {
+		return details.get(QUEST_NAME).hashCode();
+	}
+
+	@Override
 	public int compareTo(QuestDetails arg0) {
 		return ((String)details.get(QUEST_NAME)).compareTo(((String)arg0.getProperty(QUEST_NAME)));
 	}

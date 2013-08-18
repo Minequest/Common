@@ -196,6 +196,15 @@ public class V1Quest implements Quest {
 	}
 	
 	@Override
+	public int hashCode() {
+		int baseHash = 564;
+		baseHash = (int) (31 * baseHash + (questid % Integer.MAX_VALUE));
+		baseHash = 31 * baseHash + getQuestOwner().hashCode();
+		baseHash = 31 * baseHash + getDetails().hashCode();
+		return baseHash;
+	}
+
+	@Override
 	public synchronized String toString() {
 		return details.toString() + ":" + getQuestOwner() + ":" + getQuestID();
 	}

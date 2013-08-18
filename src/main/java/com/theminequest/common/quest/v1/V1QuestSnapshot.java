@@ -55,6 +55,14 @@ public class V1QuestSnapshot implements QuestSnapshot {
 	}
 	
 	@Override
+	public int hashCode() {
+		int baseHash = 933;
+		baseHash = 31 * baseHash + details.hashCode();
+		baseHash = 31 * baseHash + owner.hashCode();
+		return baseHash;
+	}
+
+	@Override
 	public QuestDetails getDetails() {
 		return details;
 	}
