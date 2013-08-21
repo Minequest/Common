@@ -107,7 +107,7 @@ public class V1Quest implements Quest {
 			detailsToggle = details.getProperty(V1QuestDetails.V1_OLDSTYLETASK);
 		
 		if (!tasks.containsKey(taskid)) {
-			Managers.logf(Level.SEVERE, "[Common|V1Quest] Starting task %s failed for %s/%s!", taskid, getQuestOwner(), getDetails().getProperty(QuestDetails.QUEST_NAME));
+			Managers.logf(Level.SEVERE, "[Common|V1Quest] Starting task %s failed for %s/%s!", taskid, getQuestOwner(), getDetails().getName());
 			finishQuest(CompleteStatus.ERROR);
 			return;
 		}
@@ -117,7 +117,7 @@ public class V1Quest implements Quest {
 				activeTask.cancelTask();
 			
 			if (activeTask.getTaskID() == taskid) {
-				Managers.logf(Level.SEVERE, "[Common|V1Quest] Tried to start already running task %s for %s/%s!", taskid, getQuestOwner(), getDetails().getProperty(QuestDetails.QUEST_NAME));
+				Managers.logf(Level.SEVERE, "[Common|V1Quest] Tried to start already running task %s for %s/%s!", taskid, getQuestOwner(), getDetails().getName());
 				finishQuest(CompleteStatus.ERROR);
 				return;
 			}

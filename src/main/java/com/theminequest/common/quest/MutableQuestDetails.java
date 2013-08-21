@@ -67,6 +67,11 @@ public class MutableQuestDetails implements QuestDetails {
 	}
 	
 	@Override
+	public String getName() {
+		return details.getName();
+	}
+
+	@Override
 	public <E> E getProperty(String key) {
 		return details.getProperty(key);
 	}

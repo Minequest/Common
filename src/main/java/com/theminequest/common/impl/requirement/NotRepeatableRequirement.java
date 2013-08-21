@@ -19,7 +19,6 @@
 package com.theminequest.common.impl.requirement;
 
 import com.theminequest.api.platform.MQPlayer;
-import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.requirement.QuestRequirement;
 import com.theminequest.api.statistic.LogStatus;
 import com.theminequest.api.statistic.QuestStatisticUtils;
@@ -37,7 +36,7 @@ public class NotRepeatableRequirement extends QuestRequirement {
 	
 	@Override
 	public boolean isSatisfied(MQPlayer player) {
-		return QuestStatisticUtils.hasQuest(player.getName(), (String) getDetails().getProperty(QuestDetails.QUEST_NAME)) != LogStatus.COMPLETED;
+		return QuestStatisticUtils.hasQuest(player.getName(), getDetails().getName()) != LogStatus.COMPLETED;
 	}
 	
 }

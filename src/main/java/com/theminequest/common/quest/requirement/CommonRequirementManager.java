@@ -81,7 +81,7 @@ public class CommonRequirementManager implements RequirementManager {
 			e.setupProperties(ID, details, properties);
 			return e;
 		} catch (Exception e) {
-			Managers.log(Level.SEVERE, "[Requirements] In creating " + requirementName + " for Quest " + details.getProperty(QuestDetails.QUEST_NAME) + ":");
+			Managers.log(Level.SEVERE, "[Requirements] In creating " + requirementName + " for Quest " + details.getName() + ":");
 			e.printStackTrace();
 			return null;
 		}

@@ -50,7 +50,6 @@ import com.theminequest.api.CompleteStatus;
 import com.theminequest.api.Managers;
 import com.theminequest.api.platform.event.TaskStartedEvent;
 import com.theminequest.api.quest.Quest;
-import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.quest.QuestTask;
 import com.theminequest.api.quest.QuestUtils;
 import com.theminequest.api.quest.event.QuestEvent;
@@ -113,7 +112,7 @@ public class V2Task implements QuestTask {
 		for (Integer event : list) {
 			String d = QuestUtils.getEvent(quest, event);
 			if (d == null) {
-				Managers.logf(Level.WARNING, "[Common|V2Task] Missing event number %s in V1Task %s for quest %s/%s; Ignoring.", event, taskid, quest.getQuestOwner(), quest.getDetails().getProperty(QuestDetails.QUEST_NAME));
+				Managers.logf(Level.WARNING, "[Common|V2Task] Missing event number %s in V1Task %s for quest %s/%s; Ignoring.", event, taskid, quest.getQuestOwner(), quest.getDetails().getName());
 				collection.remove(event);
 				continue;
 			}
@@ -126,7 +125,7 @@ public class V2Task implements QuestTask {
 			if (eventObject != null)
 				collection.put(event, eventObject);
 			else {
-				Managers.logf(Level.WARNING, "[Common|V2Task] Unknown event %s requested in event number %s for quest %s/%s; Ignoring.", eventName, event, quest.getQuestOwner(), quest.getDetails().getProperty(QuestDetails.QUEST_NAME));
+				Managers.logf(Level.WARNING, "[Common|V2Task] Unknown event %s requested in event number %s for quest %s/%s; Ignoring.", eventName, event, quest.getQuestOwner(), quest.getDetails().getName());
 				collection.remove(event);
 			}
 		}

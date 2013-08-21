@@ -117,7 +117,7 @@ public class V1EventManager implements EventManager {
 			e.setupProperties(task, eventID, arguments);
 			return e;
 		} catch (Exception e) {
-			Managers.logf(Level.SEVERE, "[Common|V1EventManager] In retrieving event %s from %s/%s:", eventname, task.getQuest().getQuestOwner(), task.getQuest().getDetails().getProperty(QuestDetails.QUEST_NAME));
+			Managers.logf(Level.SEVERE, "[Common|V1EventManager] In retrieving event %s from %s/%s:", eventname, task.getQuest().getQuestOwner(), task.getQuest().getDetails().getName());
 			e.printStackTrace();
 			return null;
 		}

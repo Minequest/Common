@@ -118,7 +118,7 @@ public class V1Task implements QuestTask {
 			
 			String d = QuestUtils.getEvent(quest, event);
 			if (d == null) {
-				Managers.logf(Level.WARNING, "[Common|V1Task] Missing event number %s in V1Task %s for quest %s/%s; Ignoring.", event, taskid, quest.getQuestOwner(), quest.getDetails().getProperty(QuestDetails.QUEST_NAME));
+				Managers.logf(Level.WARNING, "[Common|V1Task] Missing event number %s in V1Task %s for quest %s/%s; Ignoring.", event, taskid, quest.getQuestOwner(), quest.getDetails().getName());
 				running.remove(event);
 				continue;
 			}
@@ -132,7 +132,7 @@ public class V1Task implements QuestTask {
 				running.add(event);
 				objects.put(event, eventObject);
 			} else
-				Managers.logf(Level.WARNING, "[Common|V1Task] Unknown event %s requested in event number %s for quest %s/%s; Ignoring.", eventName, event, quest.getQuestOwner(), quest.getDetails().getProperty(QuestDetails.QUEST_NAME));
+				Managers.logf(Level.WARNING, "[Common|V1Task] Unknown event %s requested in event number %s for quest %s/%s; Ignoring.", eventName, event, quest.getQuestOwner(), quest.getDetails().getName());
 		}
 		
 		Common.getCommon().getV1EventManager().registerEventListeners(Collections.unmodifiableCollection(objects.values()));

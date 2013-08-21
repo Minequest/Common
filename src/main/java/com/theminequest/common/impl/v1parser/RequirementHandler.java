@@ -27,7 +27,7 @@ public class RequirementHandler implements V1Parser {
 		if (req != null)
 			reqs.put(number, req);
 		else
-			Managers.logf("[Quest] Retrieving requirement %s for detail %s failed!", number, q.getProperty(QuestDetails.QUEST_NAME));
+			Managers.logf("[Quest] Retrieving requirement %s for detail %s failed!", number, q.getName());
 	}
 	
 }

@@ -16,10 +16,11 @@ import com.theminequest.api.requirement.QuestRequirement;
 public class LuaQuestDetails implements QuestDetails {
 	
 	private LuaTable table;
+	private String name;
 	
 	public LuaQuestDetails(File questFile) {
 		setProperty(QuestDetails.QUEST_FILE, questFile);
-		setProperty(QuestDetails.QUEST_NAME, questFile.getName().substring(0, questFile.getName().indexOf(".lua")));
+		name = questFile.getName().substring(0, questFile.getName().indexOf(".lua"));
 		// DEFAULTS start
 		setProperty(QuestDetails.QUEST_DISPLAYNAME, questFile.getName());
 		setProperty(QuestDetails.QUEST_DESCRIPTION, _("No description provided..."));
@@ -49,12 +50,19 @@ public class LuaQuestDetails implements QuestDetails {
 		
 	}
 	
+	
+	
 	@Override
 	public int compareTo(QuestDetails arg0) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 	
+	@Override
+	public String getName() {
+		return name;
+	}
+
 	@Override
 	public <E> E getProperty(String key) {
 		// TODO Auto-generated method stub
