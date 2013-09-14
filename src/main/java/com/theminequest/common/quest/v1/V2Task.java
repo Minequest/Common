@@ -223,9 +223,10 @@ public class V2Task implements QuestTask {
 				complete = status;
 				quest.completeTask(this, status, -1);
 			} else if (status == CompleteStatus.SUCCESS || status == CompleteStatus.WARNING) {
-				if (nextTask != -2)
-					quest.completeTask(this, status, taskid);
-				else
+				if (nextTask != -2) {
+					complete = status;
+					quest.completeTask(this, status, nextTask);
+				} else
 					checkTasks();
 			}
 			

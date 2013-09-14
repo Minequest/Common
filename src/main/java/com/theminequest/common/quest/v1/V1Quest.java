@@ -111,18 +111,18 @@ public class V1Quest implements Quest {
 			finishQuest(CompleteStatus.ERROR);
 			return;
 		}
-		
+				
 		if (activeTask != null && !detailsToggle) {
 			if (activeTask.isComplete() == null)
 				activeTask.cancelTask();
-			
+						
 			if (activeTask.getTaskID() == taskid) {
 				Managers.logf(Level.SEVERE, "[Common|V1Quest] Tried to start already running task %s for %s/%s!", taskid, getQuestOwner(), getDetails().getName());
 				finishQuest(CompleteStatus.ERROR);
 				return;
 			}
 		}
-		
+				
 		String[] eventnums = tasks.get(taskid);
 		Set<Integer> eventnum = new HashSet<Integer>();
 		for (String e : eventnums)
