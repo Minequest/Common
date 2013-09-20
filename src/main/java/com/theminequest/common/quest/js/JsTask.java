@@ -68,7 +68,7 @@ public class JsTask implements QuestTask {
 					cx.setOptimizationLevel(-1);
 					
 					// FIXME we don't specify security for now
-					Object result = cx.evaluateString(global, (String) quest.getDetails().getProperty(JsQuestDetails.JS_SOURCE), quest.getDetails().getName(), 0, null);
+					Object result = cx.evaluateString(global, (String) quest.getDetails().getProperty(JsQuestDetails.JS_SOURCE), quest.getDetails().getName(), (int) quest.getDetails().getProperty(JsQuestDetails.JsQuestDetails.JS_LINESTART), null);
 					
 					if (observer.isDisconnected()) {
 						Managers.getPlatform().scheduleSyncTask(new Runnable() {
