@@ -49,6 +49,7 @@ import com.theminequest.common.impl.v1parser.ResetHandler;
 import com.theminequest.common.impl.v1parser.SpawnHandler;
 import com.theminequest.common.impl.v1parser.StartRequirementHandler;
 import com.theminequest.common.impl.v1parser.TargetEventHandler;
+import com.theminequest.common.impl.v1parser.TargetHandler;
 import com.theminequest.common.impl.v1parser.TaskHandler;
 
 public class V1Handler implements QuestHandler<V1Parser> {
@@ -78,6 +79,7 @@ public class V1Handler implements QuestHandler<V1Parser> {
 		addParser("reset", new ResetHandler());
 		addParser("spawn", new SpawnHandler());
 		addParser("startreq", new StartRequirementHandler());
+		addParser("target", new TargetHandler());
 		addParser("targetevent", new TargetEventHandler());
 		addParser("task", new TaskHandler());
 		addParser("v1", new OldV1Handler());
