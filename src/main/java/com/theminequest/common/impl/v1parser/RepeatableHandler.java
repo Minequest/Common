@@ -15,7 +15,7 @@ public class RepeatableHandler implements V1Parser {
 	public void handle(QuestDetails q, List<String> line) {
 		if (line.get(0).equalsIgnoreCase("false")) {
 			Map<Integer, QuestRequirement> reqs = q.getProperty(QuestDetails.QUEST_REQUIREMENTDETAILS);
-			QuestRequirement req = Managers.getRequirementManager().construct("NotRepeatableRequirement", -1, q, "");
+			QuestRequirement req = Managers.getRequirementManager().construct("NotRepeatableRequirement", -1, new String[0]);
 			reqs.put(-1, req);
 			List<Integer> getreqs = q.getProperty(QuestDetails.QUEST_GETREQUIREMENTS);
 			getreqs.add(-1);

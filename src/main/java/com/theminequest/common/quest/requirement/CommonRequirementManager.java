@@ -1,28 +1,9 @@
-/*
- * This file is part of MineQuest, The ultimate MMORPG plugin!.
- * MineQuest is licensed under GNU General Public License v3.
- * Copyright (C) 2012 The MineQuest Team
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.theminequest.common.quest.requirement;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 import com.theminequest.api.Managers;
-import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.requirement.QuestRequirement;
 import com.theminequest.api.requirement.RequirementManager;
 import com.theminequest.common.impl.requirement.HasItemRequirement;
@@ -37,11 +18,11 @@ import com.theminequest.common.impl.requirement.WorldRequirement;
 
 public class CommonRequirementManager implements RequirementManager {
 	
-	private LinkedHashMap<String, Class<? extends QuestRequirement>> classes;
+	private HashMap<String, Class<? extends QuestRequirement>> classes;
 	
 	public CommonRequirementManager() {
 		Managers.log("[Requirements] Starting Manager...");
-		classes = new LinkedHashMap<String, Class<? extends QuestRequirement>>();
+		classes = new HashMap<String, Class<? extends QuestRequirement>>();
 		
 		register(HasItemRequirement.class);
 		register(LargeGroupSizeRequirement.class);
@@ -72,16 +53,16 @@ public class CommonRequirementManager implements RequirementManager {
 	}
 	
 	@Override
-	public QuestRequirement construct(String requirementName, int ID, QuestDetails details, String properties) {
+	public QuestRequirement construct(String requirementName, int ID, String[] properties) {
 		if (!classes.containsKey(requirementName))
 			return null;
 		Class<? extends QuestRequirement> cl = classes.get(requirementName);
 		try {
 			QuestRequirement e = cl.getConstructor().newInstance();
-			e.setupProperties(ID, details, properties);
+			e.setupProperties(ID, properties);
 			return e;
 		} catch (Exception e) {
-			Managers.log(Level.SEVERE, "[Requirements] In creating " + requirementName + " for Quest " + details.getName() + ":");
+			Managers.log(Level.SEVERE, "[Requirements] In creating " + requirementName + ":");
 			e.printStackTrace();
 			return null;
 		}

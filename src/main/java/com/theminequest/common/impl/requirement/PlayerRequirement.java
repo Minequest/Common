@@ -20,7 +20,8 @@ package com.theminequest.common.impl.requirement;
 
 import java.util.Arrays;
 
-import com.theminequest.api.platform.MQPlayer;
+import com.theminequest.api.platform.entity.MQPlayer;
+import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.requirement.QuestRequirement;
 
 public class PlayerRequirement extends QuestRequirement {
@@ -40,7 +41,7 @@ public class PlayerRequirement extends QuestRequirement {
 	}
 	
 	@Override
-	public boolean isSatisfied(MQPlayer player) {
+	public boolean isSatisfied(QuestDetails details, MQPlayer player) {
 		return Arrays.binarySearch(players, player.getName().toLowerCase()) >= 0;
 	}
 	

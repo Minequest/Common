@@ -11,16 +11,16 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 
 import com.theminequest.api.Managers;
-import com.theminequest.api.platform.MQPlayer;
+import com.theminequest.api.platform.entity.MQPlayer;
 
-public class JsQuestFunctions {
+public class JsQuestUtilFunctions {
 	
 	public static final String JSLIBLOC = Managers.getPlatform().getResourceDirectory().getAbsolutePath() + File.separator + "jslib";
 	
 	private JsTask task;
 	private Scriptable global;
 	
-	protected JsQuestFunctions(JsTask task, Scriptable global) {
+	protected JsQuestUtilFunctions(JsTask task, Scriptable global) {
 		this.task = task;
 		this.global = global;
 	}

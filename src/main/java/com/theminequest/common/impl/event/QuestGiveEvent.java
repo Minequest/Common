@@ -20,7 +20,7 @@ package com.theminequest.common.impl.event;
 
 import com.theminequest.api.CompleteStatus;
 import com.theminequest.api.Managers;
-import com.theminequest.api.platform.MQPlayer;
+import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.event.DelayedQuestEvent;
 import com.theminequest.api.statistic.QuestStatisticUtils;
 import com.theminequest.api.statistic.QuestStatisticUtils.QSException;

@@ -23,7 +23,8 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.theminequest.api.platform.MQPlayer;
+import com.theminequest.api.platform.entity.MQPlayer;
+import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.requirement.QuestRequirement;
 
 public class RealDateRequirement extends QuestRequirement {
@@ -47,7 +48,7 @@ public class RealDateRequirement extends QuestRequirement {
 	}
 	
 	@Override
-	public boolean isSatisfied(MQPlayer player) {
+	public boolean isSatisfied(QuestDetails details, MQPlayer player) {
 		Date current = Calendar.getInstance().getTime();
 		return current.after(before) && current.before(after);
 	}

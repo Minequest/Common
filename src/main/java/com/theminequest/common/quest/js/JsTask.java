@@ -61,7 +61,7 @@ public class JsTask implements QuestTask {
 					
 					ScriptableObject.putConstProperty(global, "details", Context.toObject(quest.getDetails(), global));
 					ScriptableObject.putConstProperty(global, "color", Context.toObject(Managers.getPlatform().chatColor(), global));
-					ScriptableObject.putConstProperty(global, "util", Context.toObject(new JsQuestFunctions(JsTask.this, global), global));
+					ScriptableObject.putConstProperty(global, "util", Context.toObject(new JsQuestUtilFunctions(JsTask.this, global), global));
 					
 					cx.setDebugger(observer, new Integer(0));
 					cx.setGeneratingDebug(true);

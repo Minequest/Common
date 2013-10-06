@@ -19,7 +19,8 @@
 package com.theminequest.common.impl.requirement;
 
 import com.theminequest.api.platform.MQItemStack;
-import com.theminequest.api.platform.MQPlayer;
+import com.theminequest.api.platform.entity.MQPlayer;
+import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.requirement.QuestRequirement;
 
 public class HasItemRequirement extends QuestRequirement {
@@ -40,7 +41,7 @@ public class HasItemRequirement extends QuestRequirement {
 	}
 	
 	@Override
-	public boolean isSatisfied(MQPlayer player) {
+	public boolean isSatisfied(QuestDetails details, MQPlayer player) {
 		return player.getInventory().contains(new MQItemStack(item, qty, damage));
 	}
 	

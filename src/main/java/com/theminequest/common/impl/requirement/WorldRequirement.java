@@ -18,7 +18,8 @@
  */
 package com.theminequest.common.impl.requirement;
 
-import com.theminequest.api.platform.MQPlayer;
+import com.theminequest.api.platform.entity.MQPlayer;
+import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.requirement.QuestRequirement;
 
 public class WorldRequirement extends QuestRequirement {
@@ -35,7 +36,7 @@ public class WorldRequirement extends QuestRequirement {
 	}
 	
 	@Override
-	public boolean isSatisfied(MQPlayer player) {
+	public boolean isSatisfied(QuestDetails details, MQPlayer player) {
 		return player.getLocation().getWorld().equals(world);
 	}
 	

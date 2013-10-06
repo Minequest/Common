@@ -23,6 +23,7 @@ package com.theminequest.common.quest.v1;
 import static com.theminequest.common.util.I18NMessage._;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,11 +36,12 @@ import com.theminequest.api.CompleteStatus;
 import com.theminequest.api.Managers;
 import com.theminequest.api.platform.event.TaskStartedEvent;
 import com.theminequest.api.quest.Quest;
-import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.quest.QuestTask;
 import com.theminequest.api.quest.QuestUtils;
 import com.theminequest.api.quest.event.QuestEvent;
+import com.theminequest.api.quest.event.TargetedQuestEvent;
 import com.theminequest.common.Common;
+import com.theminequest.common.impl.v1parser.TargetEventHandler;
 
 /**
  * V1Task operates according to the 0.70 MineQuest System,
@@ -119,14 +121,30 @@ public class V1Task implements QuestTask {
 			String d = QuestUtils.getEvent(quest, event);
 			if (d == null) {
 				Managers.logf(Level.WARNING, "[Common|V1Task] Missing event number %s in V1Task %s for quest %s/%s; Ignoring.", event, taskid, quest.getQuestOwner(), quest.getDetails().getName());
-				running.remove(event);
+				running.remove(event); // is really needed?
 				continue;
 			}
 			
 			String eventName = d.substring(0, d.indexOf(":"));
 			String[] details = d.substring(d.indexOf(":") + 1).split(":");
+			int targeted = -1;
+			long delayMS = -1;
+			if (details.length > 0 && details[0].equals(TargetEventHandler.TARGETED_EVENT_STR)) { // targeted...
+				targeted = Integer.parseInt(details[1]);
+				delayMS = Long.parseLong(details[2]);
+				details = Arrays.copyOfRange(details, 3, details.length);
+			}
 			
 			QuestEvent eventObject = Common.getCommon().getV1EventManager().constructEvent(eventName, this, event, details);
+			
+			if (targeted != -1) {
+				if (!(eventObject instanceof TargetedQuestEvent)) {
+					Managers.logf(Level.SEVERE, "[Common|V1Task] Event %s in V1Task %s for quest %s/%s is NOT a TargetEvent!", event, taskid, quest.getQuestOwner(), quest.getDetails().getName());
+					running.remove(event); // is really needed?
+					continue;
+				}
+				((TargetedQuestEvent) eventObject).setupTarget(targeted, delayMS);
+			}
 			
 			if (eventObject != null) {
 				running.add(event);

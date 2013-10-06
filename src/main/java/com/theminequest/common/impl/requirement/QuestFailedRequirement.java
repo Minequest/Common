@@ -18,7 +18,8 @@
  */
 package com.theminequest.common.impl.requirement;
 
-import com.theminequest.api.platform.MQPlayer;
+import com.theminequest.api.platform.entity.MQPlayer;
+import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.requirement.QuestRequirement;
 import com.theminequest.api.statistic.LogStatus;
 import com.theminequest.api.statistic.QuestStatisticUtils;
@@ -37,7 +38,7 @@ public class QuestFailedRequirement extends QuestRequirement {
 	}
 	
 	@Override
-	public boolean isSatisfied(MQPlayer player) {
+	public boolean isSatisfied(QuestDetails details, MQPlayer player) {
 		LogStatus ls = QuestStatisticUtils.hasQuest(player.getName(), questToCheck);
 		return ls == LogStatus.FAILED;
 	}

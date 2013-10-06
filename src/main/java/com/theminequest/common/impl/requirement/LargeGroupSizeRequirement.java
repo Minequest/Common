@@ -20,7 +20,7 @@ package com.theminequest.common.impl.requirement;
 
 import com.theminequest.api.Managers;
 import com.theminequest.api.group.Group;
-import com.theminequest.api.platform.MQPlayer;
+import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.requirement.QuestRequirement;
 
@@ -38,8 +38,8 @@ public class LargeGroupSizeRequirement extends QuestRequirement {
 	}
 	
 	@Override
-	public boolean isSatisfied(MQPlayer player) {
-		Boolean isInstanced = getDetails().getProperty(QuestDetails.QUEST_LOADWORLD);
+	public boolean isSatisfied(QuestDetails details, MQPlayer player) {
+		Boolean isInstanced = details.getProperty(QuestDetails.QUEST_LOADWORLD);
 		if (!isInstanced)
 			return true;
 		

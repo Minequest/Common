@@ -26,7 +26,7 @@ import com.theminequest.api.Managers;
 import com.theminequest.api.group.Group;
 import com.theminequest.api.platform.MQItemStack;
 import com.theminequest.api.platform.MQMaterial;
-import com.theminequest.api.platform.MQPlayer;
+import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.event.QuestEvent;
 
 public class RewardItemEvent extends QuestEvent {

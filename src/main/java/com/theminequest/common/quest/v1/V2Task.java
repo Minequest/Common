@@ -39,6 +39,7 @@
 package com.theminequest.common.quest.v1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -53,8 +54,10 @@ import com.theminequest.api.quest.Quest;
 import com.theminequest.api.quest.QuestTask;
 import com.theminequest.api.quest.QuestUtils;
 import com.theminequest.api.quest.event.QuestEvent;
+import com.theminequest.api.quest.event.TargetedQuestEvent;
 import com.theminequest.common.Common;
 import com.theminequest.common.impl.event.NameEvent;
+import com.theminequest.common.impl.v1parser.TargetEventHandler;
 
 /**
  * V2Task operates according to the 1.2.5 MineQuest System,
@@ -116,12 +119,27 @@ public class V2Task implements QuestTask {
 				collection.remove(event);
 				continue;
 			}
-			
+						
 			String eventName = d.substring(0, d.indexOf(":"));
 			String[] details = d.substring(d.indexOf(":") + 1).split(":");
+			int targeted = -1;
+			long delayMS = -1;
+			if (details.length > 0 && details[0].equals(TargetEventHandler.TARGETED_EVENT_STR)) { // targeted...
+				targeted = Integer.parseInt(details[1]);
+				delayMS = Long.parseLong(details[2]);
+				details = Arrays.copyOfRange(details, 3, details.length);
+			}
 			
 			QuestEvent eventObject = Common.getCommon().getV1EventManager().constructEvent(eventName, this, event, details);
 			
+			if (targeted != -1) {
+				if (!(eventObject instanceof TargetedQuestEvent)) {
+					Managers.logf(Level.SEVERE, "[Common|V2Task] Event %s in V1Task %s for quest %s/%s is NOT a TargetEvent!", event, taskid, quest.getQuestOwner(), quest.getDetails().getName());
+					continue;
+				}
+				((TargetedQuestEvent) eventObject).setupTarget(targeted, delayMS);
+			}
+
 			if (eventObject != null)
 				collection.put(event, eventObject);
 			else {

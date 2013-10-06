@@ -28,6 +28,7 @@ import com.theminequest.api.quest.Quest;
 import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.quest.QuestDetailsUtils;
 import com.theminequest.api.requirement.QuestRequirement;
+import com.theminequest.api.target.QuestTarget;
 import com.theminequest.common.quest.CommonQuestDetails;
 
 public class V1QuestDetails extends CommonQuestDetails {
@@ -81,6 +82,8 @@ public class V1QuestDetails extends CommonQuestDetails {
 		setProperty(QuestDetails.QUEST_REQUIREMENTDETAILS, new HashMap<Integer, QuestRequirement>());
 		setProperty(QuestDetails.QUEST_GETREQUIREMENTS, new LinkedList<Integer>());
 		setProperty(QuestDetails.QUEST_STARTREQUIREMENTS, new LinkedList<Integer>());
+		
+		setProperty(QuestDetails.QUEST_TARGET, new HashMap<Integer, QuestTarget>());
 		
 		setProperty(V1_OLDSTYLETASK, false);
 		setProperty(V2_TASKDESCRIPTIONS, new HashMap<Integer, String>());
