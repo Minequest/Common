@@ -13,7 +13,7 @@ public class TargetHandler implements V1Parser {
 	@Override
 	public void handle(QuestDetails details, List<String> arguments) {
 		int number = Integer.parseInt(arguments.remove(0));
-		String name = arguments.remove(1);
+		String name = arguments.remove(0);
 		String parameters = "";
 		for (String s : arguments)
 			parameters += s + ":";

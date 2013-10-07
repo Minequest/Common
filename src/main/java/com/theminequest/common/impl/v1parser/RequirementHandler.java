@@ -16,7 +16,7 @@ public class RequirementHandler implements V1Parser {
 	@Override
 	public void handle(QuestDetails q, List<String> line) {
 		int number = Integer.parseInt(line.remove(0));
-		String name = line.remove(1);
+		String name = line.remove(0);
 		String details = "";
 		for (String s : line)
 			details += s + ":";
