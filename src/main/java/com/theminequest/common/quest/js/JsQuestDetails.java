@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import com.theminequest.api.quest.Quest;
 import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.requirement.QuestRequirement;
-import com.theminequest.api.target.QuestTarget;
+import com.theminequest.api.targeted.QuestTarget;
 import com.theminequest.common.quest.CommonQuestDetails;
 
 /**

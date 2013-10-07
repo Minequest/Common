@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.theminequest.api.Managers;
 import com.theminequest.api.quest.QuestDetails;
-import com.theminequest.api.target.QuestTarget;
+import com.theminequest.api.targeted.QuestTarget;
 import com.theminequest.common.quest.v1.V1Parser;
 
 public class TargetHandler implements V1Parser {
