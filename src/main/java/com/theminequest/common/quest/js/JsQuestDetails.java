@@ -27,7 +27,7 @@ public class JsQuestDetails extends CommonQuestDetails {
 
 	public JsQuestDetails(String name) {
 		super(name);
-		setProperty(QUEST_LOADWORLD, true);
+		super.setProperty(QUEST_LOADWORLD, true);
 		
 		// from V1
 		setProperty(QuestDetails.QUEST_DISPLAYNAME, name);
