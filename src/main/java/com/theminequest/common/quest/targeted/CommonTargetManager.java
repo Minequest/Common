@@ -15,7 +15,7 @@ public class CommonTargetManager implements TargetManager {
 	private HashMap<String, Class<? extends QuestTarget>> classes;
 	
 	public CommonTargetManager() {
-		Managers.log("[Requirements] Starting Manager...");
+		Managers.log("[Target] Starting Manager...");
 		classes = new HashMap<String, Class<? extends QuestTarget>>();
 		
 		register(AreaTarget.class);
