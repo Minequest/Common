@@ -37,7 +37,7 @@ public class CommonRequirementManager implements RequirementManager {
 	}
 	
 	private void register(Class<? extends QuestRequirement> requirement) {
-		register(requirement.getName(), requirement);
+		register(requirement.getSimpleName(), requirement);
 	}
 	
 	@Override

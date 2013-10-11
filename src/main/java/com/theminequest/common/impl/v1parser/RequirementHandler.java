@@ -15,15 +15,15 @@ public class RequirementHandler implements V1Parser {
 	 */
 	@Override
 	public void handle(QuestDetails q, List<String> line) {
-		int number = Integer.parseInt(line.remove(0));
-		String name = line.remove(0);
+		int number = Integer.parseInt(line.remove(0).trim());
+		String name = line.remove(0).trim();
 		String details = "";
 		for (String s : line)
 			details += s + ":";
 		if (details.length() != 0)
 			details = details.substring(0, details.length() - 1);
 		Map<Integer, QuestRequirement> reqs = q.getProperty(QuestDetails.QUEST_REQUIREMENTDETAILS);
-		QuestRequirement req = Managers.getRequirementManager().construct(name, number, details.split(":"));
+		QuestRequirement req = Managers.getRequirementManager().construct(name.trim(), number, details.split(":"));
 		if (req != null)
 			reqs.put(number, req);
 		else

@@ -24,7 +24,7 @@ public class CommonTargetManager implements TargetManager {
 	}
 	
 	private void register(Class<? extends QuestTarget> target) {
-		register(target.getName(), target);
+		register(target.getSimpleName(), target);
 	}
 	
 	@Override
