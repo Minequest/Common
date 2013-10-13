@@ -130,8 +130,8 @@ public class V1Task implements QuestTask {
 			int targeted = -1;
 			long delayMS = -1;
 			if (details.length > 0 && details[0].equals(TargetEventHandler.TARGETED_EVENT_STR)) { // targeted...
-				targeted = Integer.parseInt(details[1]);
-				delayMS = Long.parseLong(details[2]);
+				targeted = Integer.parseInt(details[2]);
+				delayMS = Long.parseLong(details[1]);
 				details = Arrays.copyOfRange(details, 3, details.length);
 			}
 			
