@@ -53,7 +53,7 @@ public class JsQuestUtilFunctions {
 		
 		try {
 			try (BufferedReader read = new BufferedReader(new FileReader(file))) {
-				cx.evaluateReader(global, read, file.getName(), 0, null); // FIXME no security
+				cx.evaluateReader(global, read, file.getName(), 1, null); // FIXME no security
 			}
 		} finally {
 			Context.exit();

@@ -20,8 +20,13 @@ package com.theminequest.common;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
+
+import org.reflections.Reflections;
 
 import com.theminequest.api.Managers;
 import com.theminequest.common.quest.v1.V1EventManager;
@@ -40,6 +45,7 @@ public class Common {
 	
 	private Properties attributes;
 	private V1EventManager events;
+	private Set<String> resources;
 	
 	public Common() {
 		attributes = new Properties();
@@ -57,6 +63,13 @@ public class Common {
 		}
 		
 		events = new V1EventManager();
+		
+		Reflections jsReflections = new Reflections("javascript");
+		resources = jsReflections.getResources(Pattern.compile("*.js"));
+	}
+	
+	public Set<String> getJavascriptResources() {
+		return Collections.unmodifiableSet(resources);
 	}
 	
 	public V1EventManager getV1EventManager() {
