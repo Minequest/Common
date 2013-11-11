@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
 
 import com.theminequest.api.Managers;
 import com.theminequest.common.quest.v1.V1EventManager;
@@ -64,8 +65,8 @@ public class Common {
 		
 		events = new V1EventManager();
 		
-		Reflections jsReflections = new Reflections("javascript");
-		resources = jsReflections.getResources(Pattern.compile("*.js"));
+		Reflections jsReflections = new Reflections("javascript", new ResourcesScanner());
+		resources = jsReflections.getResources(Pattern.compile(".*.js"));
 	}
 	
 	public Set<String> getJavascriptResources() {
