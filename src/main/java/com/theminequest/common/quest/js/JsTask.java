@@ -49,7 +49,7 @@ public class JsTask implements QuestTask {
 		this.continuation = null;
 		
 		this.status = null;
-		this.taskDescription = _("No description given - ask the quest maker to use util.setTaskDescription!");
+		this.taskDescription = _("No description given - ask the quest maker to use setTaskDescription()!");
 	}
 	
 	@Override
@@ -85,11 +85,10 @@ public class JsTask implements QuestTask {
 						
 						ScriptableObject.putConstProperty(global, "details", Context.toObject(quest.getDetails(), global));
 						ScriptableObject.putConstProperty(global, "color", Context.toObject(Managers.getPlatform().chatColor(), global));
-						ScriptableObject.putConstProperty(global, "util", Context.toObject(new JsQuestUtilFunctions(JsTask.this, global), global));
 						
 						// bind all the functions in the ScriptFunctions.java
 						// class into JavaScript as global functions
-						global.put("scriptfunctions", global, new JsQuestGlobalFunctions(JsTask.this));
+						global.put("scriptfunctions", global, new JsQuestGlobalFunctions(JsTask.this, global));
 						cx.evaluateString(global, " for(var fn in scriptfunctions) { if(typeof scriptfunctions[fn] === 'function') {this[fn] = (function() {var method = scriptfunctions[fn];return function() {return method.apply(scriptfunctions,arguments);};})();}};", "function transferrer", 1, null);
 						
 						// pull in scripts we don't have
@@ -97,7 +96,9 @@ public class JsTask implements QuestTask {
 							try {
 								cx.evaluateReader(global, new InputStreamReader(Common.class.getResourceAsStream("/" + str)), str, 1, null);
 							} catch (IOException e) {
-								Managers.logf(Level.SEVERE, "[JsResources] Issues loading %s: %s", str, e.getMessage());
+								Managers.logf(Level.SEVERE, "[JsResources] IO exception loading %s: %s", str, e.getMessage());
+							} catch (EcmaError err) {
+								Managers.logf(Level.SEVERE, "[JsResources] ECMA error loading %s: %s", str, err.getMessage());
 							}
 						}
 						
@@ -118,10 +119,11 @@ public class JsTask implements QuestTask {
 						return;
 					} catch (EcmaError err) {
 						status = CompleteStatus.ERROR;
+						
 						Managers.logf(Level.SEVERE, "[ECMA] In evaluating %s/%s: %s", quest.getQuestOwner(), quest.getDetails().getName(), err.toString());
-						MQPlayer owner = Managers.getPlatform().getPlayer(quest.getQuestOwner());
-						if (owner != null)
-							owner.chat(Managers.getPlatform().chatColor().RED() + "Error with your quest: " + err.toString());
+						for (MQPlayer player : Managers.getGroupManager().get(getQuest()).getMembers())
+							player.sendMessage(Managers.getPlatform().chatColor().RED() + "Error with the quest: " + err.toString());
+						
 						Managers.getPlatform().scheduleSyncTask(new Runnable() {
 							
 							@Override
@@ -145,7 +147,7 @@ public class JsTask implements QuestTask {
 						});
 						return;
 					}
-										
+					
 					status = CompleteStatus.ERROR;
 					
 					if (result == null || result.equals(0))
