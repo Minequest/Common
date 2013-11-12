@@ -54,130 +54,146 @@ public class JsTask implements QuestTask {
 	
 	@Override
 	public void start() {
-		if (jsThread != null && jsThread.isAlive())
-			return;
+		synchronized (status) {
+			if (status != null)
+				return;
+		}
 		
-		jsThread = new Thread(new Runnable() {
+		synchronized (jsThread) {
+			if (jsThread != null && jsThread.isAlive())
+				return;
 			
-			@Override
-			public void run() {
-				if (status != null)
-					return;
+			jsThread = new Thread(new Runnable() {
 				
-				Context cx = Context.enter();
-				
-				try {
-					synchronized (SYNCLOCK) {
-						if (STD_OBJ == null) {
-							STD_OBJ = cx.initStandardObjects(null, true);
-							STD_OBJ.sealObject();
-						}
-					}
+				@Override
+				public void run() {
+					Context cx = Context.enter();
 					
-					cx.setDebugger(observer, new Integer(0));
-					cx.setGeneratingDebug(true);
-					cx.setOptimizationLevel(-1);
-					
-					if (global == null) {
-						global = cx.newObject(STD_OBJ);
-						global.setPrototype(STD_OBJ);
-						global.setParentScope(null);
-						
-						ScriptableObject.putConstProperty(global, "details", Context.toObject(quest.getDetails(), global));
-						ScriptableObject.putConstProperty(global, "color", Context.toObject(Managers.getPlatform().chatColor(), global));
-						
-						// bind all the functions in the ScriptFunctions.java
-						// class into JavaScript as global functions
-						global.put("scriptfunctions", global, new JsQuestGlobalFunctions(JsTask.this, global));
-						cx.evaluateString(global, " for(var fn in scriptfunctions) { if(typeof scriptfunctions[fn] === 'function') {this[fn] = (function() {var method = scriptfunctions[fn];return function() {return method.apply(scriptfunctions,arguments);};})();}};", "function transferrer", 1, null);
-						
-						// pull in scripts we don't have
-						for (String str : Common.getCommon().getJavascriptResources()) {
-							try {
-								cx.evaluateReader(global, new InputStreamReader(Common.class.getResourceAsStream("/" + str)), str, 1, null);
-							} catch (IOException e) {
-								Managers.logf(Level.SEVERE, "[JsResources] IO exception loading %s: %s", str, e.getMessage());
-							} catch (EcmaError err) {
-								Managers.logf(Level.SEVERE, "[JsResources] ECMA error loading %s: %s", str, err.getMessage());
-							}
-						}
-						
-						cx.evaluateString(global, (String) quest.getDetails().getProperty(JsQuestDetails.JS_SOURCE), quest.getDetails().getName(), (int) quest.getDetails().getProperty(JsQuestDetails.JS_LINESTART), null);
-					}
-					
-					// evaluate
-					Function f = (Function) (global.get("main", global));
-					Double result = null;
 					try {
-						if (continuation == null)
-							result = (Double) cx.callFunctionWithContinuations(f, global, new Object[1]);
-						else
-							result = (Double) cx.resumeContinuation(continuation.getContinuation(), global, (Integer) continuation.getApplicationState());
-					} catch (ContinuationPending pending) {
-						// script paused
-						continuation = pending;
-						return;
-					} catch (EcmaError err) {
-						status = CompleteStatus.ERROR;
-						
-						Managers.logf(Level.SEVERE, "[ECMA] In evaluating %s/%s: %s", quest.getQuestOwner(), quest.getDetails().getName(), err.toString());
-						for (MQPlayer player : Managers.getGroupManager().get(getQuest()).getMembers())
-							player.sendMessage(Managers.getPlatform().chatColor().RED() + "Error with the quest: " + err.toString());
-						
-						Managers.getPlatform().scheduleSyncTask(new Runnable() {
-							
-							@Override
-							public void run() {
-								completed();
+						synchronized (SYNCLOCK) {
+							if (STD_OBJ == null) {
+								STD_OBJ = cx.initStandardObjects(null, true);
+								STD_OBJ.sealObject();
 							}
-							
-						});
-						return;
-					}
-					
-					if (observer.isDisconnected()) {
-						status = CompleteStatus.CANCELED;
-						Managers.getPlatform().scheduleSyncTask(new Runnable() {
-							
-							@Override
-							public void run() {
-								completed();
-							}
-							
-						});
-						return;
-					}
-					
-					status = CompleteStatus.ERROR;
-					
-					if (result == null || result.equals(0))
-						status = CompleteStatus.SUCCESS;
-					else if (result.equals(1))
-						status = CompleteStatus.FAIL;
-					else if (result.equals(2))
-						status = CompleteStatus.WARNING;
-					else if (result.equals(-2))
-						status = CompleteStatus.IGNORE;
-					else if (result.equals(-1))
-						status = CompleteStatus.CANCELED;
-					
-					Managers.getPlatform().scheduleSyncTask(new Runnable() {
-						
-						@Override
-						public void run() {
-							completed();
 						}
 						
-					});
-					
-				} finally {
-					Context.exit();
+						cx.setDebugger(observer, new Integer(0));
+						cx.setGeneratingDebug(true);
+						cx.setOptimizationLevel(-1);
+						
+						if (global == null) {
+							global = cx.newObject(STD_OBJ);
+							global.setPrototype(STD_OBJ);
+							global.setParentScope(null);
+							
+							ScriptableObject.putConstProperty(global, "details", Context.toObject(quest.getDetails(), global));
+							ScriptableObject.putConstProperty(global, "color", Context.toObject(Managers.getPlatform().chatColor(), global));
+							
+							// bind all the functions in the
+							// ScriptFunctions.java
+							// class into JavaScript as global functions
+							global.put("scriptfunctions", global, new JsQuestGlobalFunctions(JsTask.this, global));
+							cx.evaluateString(global, " for(var fn in scriptfunctions) { if(typeof scriptfunctions[fn] === 'function') {this[fn] = (function() {var method = scriptfunctions[fn];return function() {return method.apply(scriptfunctions,arguments);};})();}};", "function transferrer", 1, null);
+							
+							// pull in scripts we don't have
+							for (String str : Common.getCommon().getJavascriptResources()) {
+								try {
+									cx.evaluateReader(global, new InputStreamReader(Common.class.getResourceAsStream("/" + str)), str, 1, null);
+								} catch (IOException e) {
+									Managers.logf(Level.SEVERE, "[JsResources] IO exception loading %s: %s", str, e.getMessage());
+								} catch (EcmaError err) {
+									Managers.logf(Level.SEVERE, "[JsResources] ECMA error loading %s: %s", str, err.getMessage());
+								}
+							}
+							
+							cx.evaluateString(global, (String) quest.getDetails().getProperty(JsQuestDetails.JS_SOURCE), quest.getDetails().getName(), (int) quest.getDetails().getProperty(JsQuestDetails.JS_LINESTART), null);
+						}
+						
+						// evaluate
+						Function f = (Function) (global.get("main", global));
+						Double result = null;
+						try {
+							if (continuation == null)
+								result = (Double) cx.callFunctionWithContinuations(f, global, new Object[1]);
+							else
+								result = (Double) cx.resumeContinuation(continuation.getContinuation(), global, (Integer) continuation.getApplicationState());
+						} catch (ContinuationPending pending) {
+							// script paused
+							continuation = pending;
+							return;
+						} catch (EcmaError err) {
+							synchronized (status) {
+								status = CompleteStatus.ERROR;
+							}
+							
+							Managers.logf(Level.SEVERE, "[ECMA] In evaluating %s/%s: %s", quest.getQuestOwner(), quest.getDetails().getName(), err.toString());
+							for (MQPlayer player : Managers.getGroupManager().get(getQuest()).getMembers())
+								player.sendMessage(Managers.getPlatform().chatColor().RED() + "Error with the quest: " + err.toString());
+							
+							Managers.getPlatform().scheduleSyncTask(new Runnable() {
+								
+								@Override
+								public void run() {
+									completed();
+								}
+								
+							});
+							return;
+						}
+						
+						synchronized (status) {
+							if (status != null)
+								return;
+						}
+						
+						if (observer.isDisconnected()) {
+							synchronized (status) {
+								status = CompleteStatus.CANCELED;
+							}
+							Managers.getPlatform().scheduleSyncTask(new Runnable() {
+								
+								@Override
+								public void run() {
+									completed();
+								}
+								
+							});
+							return;
+						}
+						
+						synchronized (status) {
+							status = CompleteStatus.ERROR;
+							
+							if (result == null || result.equals(0))
+								status = CompleteStatus.SUCCESS;
+							else if (result.equals(1))
+								status = CompleteStatus.FAIL;
+							else if (result.equals(2))
+								status = CompleteStatus.WARNING;
+							else if (result.equals(-2))
+								status = CompleteStatus.IGNORE;
+							else if (result.equals(-1))
+								status = CompleteStatus.CANCELED;
+						}
+						
+						Managers.getPlatform().scheduleSyncTask(new Runnable() {
+							
+							@Override
+							public void run() {
+								completed();
+							}
+							
+						});
+						
+					} finally {
+						Context.exit();
+					}
 				}
-			}
+				
+			});
 			
-		});
-		
-		jsThread.start();
+			jsThread.start();
+		}
 	}
 	
 	public void unpause() {
@@ -185,12 +201,18 @@ public class JsTask implements QuestTask {
 	}
 	
 	private void completed() {
-		quest.completeTask(this, status, -1);
+		observer.setDisconnected(true); // just as a precaution, though is it
+										// really needed?
+		synchronized (status) {
+			quest.completeTask(this, status, -1);
+		}
 	}
 	
 	@Override
 	public CompleteStatus isComplete() {
-		return status;
+		synchronized (status) {
+			return status;
+		}
 	}
 	
 	@Override
@@ -227,7 +249,9 @@ public class JsTask implements QuestTask {
 		// this will toggle the Js runtime to stop
 		// and will call (as above) completed(CANCELED)
 		observer.setDisconnected(true);
-		status = CompleteStatus.CANCELED;
+		synchronized (status) {
+			status = CompleteStatus.CANCELED;
+		}
 		Managers.getPlatform().scheduleSyncTask(new Runnable() {
 			
 			@Override
