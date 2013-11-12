@@ -63,7 +63,7 @@ public class JsHandler implements QuestHandler<V1Parser> {
 		
 		// questFile is the jsq file (js quest file)
 		
-		JsQuestDetails details = new JsQuestDetails(questFile.getName().substring(0, questFile.getName().lastIndexOf(".jsq")));
+		JsQuestDetails details = new JsQuestDetails(questFile);
 		
 		// detect encoding
 		FileInputStream encodingStreamDetect = null;

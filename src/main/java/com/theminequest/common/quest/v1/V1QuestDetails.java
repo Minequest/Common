@@ -54,10 +54,10 @@ public class V1QuestDetails extends CommonQuestDetails {
 	public static final String V2_TASKDESCRIPTIONS = "v2.descriptions";
 
 	public V1QuestDetails(File questFile) {
-		super(questFile.getName().substring(0, questFile.getName().indexOf(".quest")));
+		super(questFile.getName().substring(0, questFile.getName().lastIndexOf(".quest")));
 		setProperty(QuestDetails.QUEST_FILE, questFile);
 		// DEFAULTS start
-		setProperty(QuestDetails.QUEST_DISPLAYNAME, questFile.getName());
+		setProperty(QuestDetails.QUEST_DISPLAYNAME, getName());
 		setProperty(QuestDetails.QUEST_DESCRIPTION, _("No description provided..."));
 		setProperty(QuestDetails.QUEST_ACCEPT, _("Quest Accepted!"));
 		setProperty(QuestDetails.QUEST_ABORT, _("Quest Aborted!"));

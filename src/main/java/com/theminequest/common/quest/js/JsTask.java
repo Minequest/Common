@@ -117,11 +117,11 @@ public class JsTask implements QuestTask {
 					}
 					
 					if (observer.isDisconnected()) {
+						status = CompleteStatus.CANCELED;
 						Managers.getPlatform().scheduleSyncTask(new Runnable() {
 							
 							@Override
 							public void run() {
-								status = CompleteStatus.CANCELED;
 								completed();
 							}
 							

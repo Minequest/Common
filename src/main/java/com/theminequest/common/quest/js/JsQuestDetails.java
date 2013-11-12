@@ -2,6 +2,7 @@ package com.theminequest.common.quest.js;
 
 import static com.theminequest.common.util.I18NMessage._;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -25,12 +26,13 @@ public class JsQuestDetails extends CommonQuestDetails {
 	
 	public static final String JS_LINESTART = "js.linestart";
 
-	public JsQuestDetails(String name) {
-		super(name);
+	public JsQuestDetails(File questFile) {
+		super(questFile.getName().substring(0, questFile.getName().lastIndexOf(".jsq")));
+		setProperty(QuestDetails.QUEST_FILE, questFile);
 		super.setProperty(QUEST_LOADWORLD, true);
 		
 		// from V1
-		setProperty(QuestDetails.QUEST_DISPLAYNAME, name);
+		setProperty(QuestDetails.QUEST_DISPLAYNAME, getName());
 		setProperty(QuestDetails.QUEST_DESCRIPTION, _("No description provided..."));
 		setProperty(QuestDetails.QUEST_ACCEPT, _("Quest Accepted!"));
 		setProperty(QuestDetails.QUEST_ABORT, _("Quest Aborted!"));
