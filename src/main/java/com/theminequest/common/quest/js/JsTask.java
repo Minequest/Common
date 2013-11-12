@@ -10,12 +10,14 @@ import java.util.logging.Level;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContinuationPending;
+import org.mozilla.javascript.EcmaError;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
 import com.theminequest.api.CompleteStatus;
 import com.theminequest.api.Managers;
+import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.Quest;
 import com.theminequest.api.quest.QuestTask;
 import com.theminequest.api.quest.event.QuestEvent;
@@ -87,13 +89,13 @@ public class JsTask implements QuestTask {
 						
 						// bind all the functions in the ScriptFunctions.java
 						// class into JavaScript as global functions
-						global.put("scriptfunctions", global, new JsQuestGlobalFunctions());
+						global.put("scriptfunctions", global, new JsQuestGlobalFunctions(JsTask.this));
 						cx.evaluateString(global, " for(var fn in scriptfunctions) { if(typeof scriptfunctions[fn] === 'function') {this[fn] = (function() {var method = scriptfunctions[fn];return function() {return method.apply(scriptfunctions,arguments);};})();}};", "function transferrer", 1, null);
 						
 						// pull in scripts we don't have
 						for (String str : Common.getCommon().getJavascriptResources()) {
 							try {
-								cx.evaluateReader(global, new InputStreamReader(Common.class.getResourceAsStream(str)), str, 1, null);
+								cx.evaluateReader(global, new InputStreamReader(Common.class.getResourceAsStream("/" + str)), str, 1, null);
 							} catch (IOException e) {
 								Managers.logf(Level.SEVERE, "[JsResources] Issues loading %s: %s", str, e.getMessage());
 							}
@@ -104,15 +106,30 @@ public class JsTask implements QuestTask {
 					
 					// evaluate
 					Function f = (Function) (global.get("main", global));
-					Object result = null;
+					Double result = null;
 					try {
 						if (continuation == null)
-							result = cx.callFunctionWithContinuations(f, global, new Object[1]);
+							result = (Double) cx.callFunctionWithContinuations(f, global, new Object[1]);
 						else
-							result = cx.resumeContinuation(continuation.getContinuation(), global, (Integer) continuation.getApplicationState());
+							result = (Double) cx.resumeContinuation(continuation.getContinuation(), global, (Integer) continuation.getApplicationState());
 					} catch (ContinuationPending pending) {
 						// script paused
 						continuation = pending;
+						return;
+					} catch (EcmaError err) {
+						status = CompleteStatus.ERROR;
+						Managers.logf(Level.SEVERE, "[ECMA] In evaluating %s/%s: %s", quest.getQuestOwner(), quest.getDetails().getName(), err.toString());
+						MQPlayer owner = Managers.getPlatform().getPlayer(quest.getQuestOwner());
+						if (owner != null)
+							owner.chat(Managers.getPlatform().chatColor().RED() + "Error with your quest: " + err.toString());
+						Managers.getPlatform().scheduleSyncTask(new Runnable() {
+							
+							@Override
+							public void run() {
+								completed();
+							}
+							
+						});
 						return;
 					}
 					
@@ -128,7 +145,7 @@ public class JsTask implements QuestTask {
 						});
 						return;
 					}
-					
+										
 					status = CompleteStatus.ERROR;
 					
 					if (result == null || result.equals(0))
@@ -159,6 +176,10 @@ public class JsTask implements QuestTask {
 		});
 		
 		jsThread.start();
+	}
+	
+	public void unpause() {
+		start();
 	}
 	
 	private void completed() {
