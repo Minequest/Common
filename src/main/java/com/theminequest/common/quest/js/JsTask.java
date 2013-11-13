@@ -110,7 +110,27 @@ public class JsTask implements QuestTask {
 								}
 							}
 							
-							cx.evaluateString(global, (String) quest.getDetails().getProperty(JsQuestDetails.JS_SOURCE), quest.getDetails().getName(), (int) quest.getDetails().getProperty(JsQuestDetails.JS_LINESTART), null);
+							try {
+								cx.evaluateString(global, (String) quest.getDetails().getProperty(JsQuestDetails.JS_SOURCE), quest.getDetails().getName(), (int) quest.getDetails().getProperty(JsQuestDetails.JS_LINESTART), null);
+							} catch (EcmaError err) {
+								synchronized (statusLock) {
+									status = CompleteStatus.ERROR;
+								}
+								
+								Managers.logf(Level.SEVERE, "[ECMA] In pre-evaluating %s/%s: %s", quest.getQuestOwner(), quest.getDetails().getName(), err.toString());
+								for (MQPlayer player : Managers.getGroupManager().get(getQuest()).getMembers())
+									player.sendMessage(Managers.getPlatform().chatColor().RED() + "Couldn't start the quest: " + err.toString());
+								
+								Managers.getPlatform().scheduleSyncTask(new Runnable() {
+									
+									@Override
+									public void run() {
+										completed();
+									}
+									
+								});
+								return;
+							}
 						}
 						
 						// evaluate
