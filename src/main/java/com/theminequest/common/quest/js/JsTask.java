@@ -31,6 +31,7 @@ public class JsTask implements QuestTask {
 	private static final Object SYNCLOCK = new Object();
 	
 	private JsQuest quest;
+	private Object jsThreadLock;
 	private Thread jsThread;
 	private JsObserver observer;
 	
@@ -43,6 +44,7 @@ public class JsTask implements QuestTask {
 	
 	protected JsTask(JsQuest quest) {
 		this.quest = quest;
+		this.jsThreadLock = new Object();
 		this.jsThread = null;
 		this.observer = new JsObserver();
 		
@@ -61,7 +63,7 @@ public class JsTask implements QuestTask {
 				return;
 		}
 		
-		synchronized (jsThread) {
+		synchronized (jsThreadLock) {
 			if (jsThread != null && jsThread.isAlive())
 				return;
 			
