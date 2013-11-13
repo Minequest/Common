@@ -65,8 +65,15 @@ public class Common {
 		
 		events = new V1EventManager();
 		
-		Reflections jsReflections = new Reflections("javascript", new ResourcesScanner());
-		resources = jsReflections.getResources(Pattern.compile(".*.js"));
+		Managers.getPlatform().scheduleSyncTask(new Runnable() {
+
+			@Override
+			public void run() {
+				Reflections jsReflections = new Reflections("javascript", new ResourcesScanner());
+				resources = jsReflections.getResources(Pattern.compile(".*.js"));
+			}
+			
+		});
 	}
 	
 	public Set<String> getJavascriptResources() {
