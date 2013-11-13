@@ -37,6 +37,7 @@ public class JsTask implements QuestTask {
 	private Scriptable global;
 	private ContinuationPending continuation;
 	
+	private Object statusLock;
 	private CompleteStatus status;
 	private String taskDescription;
 	
@@ -47,14 +48,15 @@ public class JsTask implements QuestTask {
 		
 		this.global = null;
 		this.continuation = null;
-		
+
+		this.statusLock = new Object();
 		this.status = null;
 		this.taskDescription = _("No description given - ask the quest maker to use setTaskDescription()!");
 	}
 	
 	@Override
 	public void start() {
-		synchronized (status) {
+		synchronized (statusLock) {
 			if (status != null)
 				return;
 		}
@@ -122,7 +124,7 @@ public class JsTask implements QuestTask {
 							continuation = pending;
 							return;
 						} catch (EcmaError err) {
-							synchronized (status) {
+							synchronized (statusLock) {
 								status = CompleteStatus.ERROR;
 							}
 							
@@ -141,13 +143,13 @@ public class JsTask implements QuestTask {
 							return;
 						}
 						
-						synchronized (status) {
+						synchronized (statusLock) {
 							if (status != null)
 								return;
 						}
 						
 						if (observer.isDisconnected()) {
-							synchronized (status) {
+							synchronized (statusLock) {
 								status = CompleteStatus.CANCELED;
 							}
 							Managers.getPlatform().scheduleSyncTask(new Runnable() {
@@ -161,7 +163,7 @@ public class JsTask implements QuestTask {
 							return;
 						}
 						
-						synchronized (status) {
+						synchronized (statusLock) {
 							status = CompleteStatus.ERROR;
 							
 							if (result == null || result.equals(0))
@@ -203,14 +205,14 @@ public class JsTask implements QuestTask {
 	private void completed() {
 		observer.setDisconnected(true); // just as a precaution, though is it
 										// really needed?
-		synchronized (status) {
+		synchronized (statusLock) {
 			quest.completeTask(this, status, -1);
 		}
 	}
 	
 	@Override
 	public CompleteStatus isComplete() {
-		synchronized (status) {
+		synchronized (statusLock) {
 			return status;
 		}
 	}
@@ -249,7 +251,7 @@ public class JsTask implements QuestTask {
 		// this will toggle the Js runtime to stop
 		// and will call (as above) completed(CANCELED)
 		observer.setDisconnected(true);
-		synchronized (status) {
+		synchronized (statusLock) {
 			status = CompleteStatus.CANCELED;
 		}
 		Managers.getPlatform().scheduleSyncTask(new Runnable() {
