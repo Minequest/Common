@@ -50,7 +50,7 @@ public class JsTask implements QuestTask {
 		
 		this.global = null;
 		this.continuation = null;
-
+		
 		this.statusLock = new Object();
 		this.status = null;
 		this.taskDescription = _("No description given - ask the quest maker to use setTaskDescription()!");
@@ -168,16 +168,27 @@ public class JsTask implements QuestTask {
 						synchronized (statusLock) {
 							status = CompleteStatus.ERROR;
 							
-							if (result == null || result.equals(0))
+							if (result == null)
 								status = CompleteStatus.SUCCESS;
-							else if (result.equals(1))
-								status = CompleteStatus.FAIL;
-							else if (result.equals(2))
-								status = CompleteStatus.WARNING;
-							else if (result.equals(-2))
-								status = CompleteStatus.IGNORE;
-							else if (result.equals(-1))
-								status = CompleteStatus.CANCELED;
+							else {
+								switch (result.intValue()) {
+								case 0:
+									status = CompleteStatus.SUCCESS;
+									break;
+								case 2:
+									status = CompleteStatus.WARNING;
+									break;
+								case -1:
+									status = CompleteStatus.CANCELED;
+									break;
+								case -2:
+									status = CompleteStatus.IGNORE;
+									break;
+								default:
+									status = CompleteStatus.FAIL;
+									break;
+								}
+							}
 						}
 						
 						Managers.getPlatform().scheduleSyncTask(new Runnable() {
