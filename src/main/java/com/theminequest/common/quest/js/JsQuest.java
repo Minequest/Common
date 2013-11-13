@@ -23,6 +23,8 @@ public class JsQuest implements Quest {
 	private JsTask task;
 	private CompleteStatus status;
 	
+	private volatile boolean called;
+	
 	protected JsQuest(long questId, String questOwner, JsQuestDetails details) {
 		this.questId = questId;
 		this.questOwner = questOwner;
@@ -30,6 +32,8 @@ public class JsQuest implements Quest {
 		
 		this.task = null;
 		this.status = null;
+		
+		this.called = false;
 		
 		// load the world if necessary/move team to team leader
 		String world = details.getProperty(QuestDetails.QUEST_WORLD);
@@ -116,6 +120,11 @@ public class JsQuest implements Quest {
 	
 	@Override
 	public void completeTask(QuestTask task, CompleteStatus status, int nextTask) {
+		if (called)
+			return;
+		
+		called = true;
+		
 		TaskCompleteEvent event = new TaskCompleteEvent(task);
 		Managers.getPlatform().callEvent(event); // should this be deferred? FIXME
 		

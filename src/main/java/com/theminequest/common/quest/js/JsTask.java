@@ -188,27 +188,10 @@ public class JsTask implements QuestTask {
 						synchronized (statusLock) {
 							status = CompleteStatus.ERROR;
 							
-							if (result == null)
+							if (result == null || result.intValue() == 0)
 								status = CompleteStatus.SUCCESS;
-							else {
-								switch (result.intValue()) {
-								case 0:
-									status = CompleteStatus.SUCCESS;
-									break;
-								case 2:
-									status = CompleteStatus.WARNING;
-									break;
-								case -1:
-									status = CompleteStatus.CANCELED;
-									break;
-								case -2:
-									status = CompleteStatus.IGNORE;
-									break;
-								default:
-									status = CompleteStatus.FAIL;
-									break;
-								}
-							}
+							else
+								status = CompleteStatus.FAIL;
 						}
 						
 						Managers.getPlatform().scheduleSyncTask(new Runnable() {
