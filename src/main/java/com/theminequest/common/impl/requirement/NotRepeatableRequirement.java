@@ -23,7 +23,16 @@ import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.requirement.QuestRequirement;
 import com.theminequest.api.statistic.LogStatus;
 import com.theminequest.api.statistic.QuestStatisticUtils;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Requirement",
+		ident = "NotRepeatableRequirement",
+		description = "Mark this quest as not repeatable.",
+		arguments = { },
+		typeArguments = { }
+		)
 public class NotRepeatableRequirement extends QuestRequirement {
 	
 	/**

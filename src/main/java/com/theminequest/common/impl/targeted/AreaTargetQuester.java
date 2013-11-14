@@ -12,7 +12,16 @@ import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.Quest;
 import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.targeted.QuestTarget;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Target",
+		ident = "AreaTargetQuester",
+		description = "This is used to select all of the Questers near the first one off from another target, because of this it takes a target parameter and a radius.",
+		arguments = { "Other Target ID", "Radius" },
+		typeArguments = { DocArgType.INT, DocArgType.FLOAT }
+		)
 public class AreaTargetQuester extends QuestTarget {
 	
 	private static final long serialVersionUID = 7775158671780728971L;

@@ -5,7 +5,15 @@ import java.util.Map;
 
 import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.common.quest.v1.V1Parser;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Task",
+		description = "Define a task.",
+		arguments = { "Unique ID", "Tasks (comma-delimited)" },
+		typeArguments = { DocArgType.INT, DocArgType.STRING }
+		)
 public class TaskHandler implements V1Parser {
 	
 	@Override

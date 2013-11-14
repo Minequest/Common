@@ -11,7 +11,16 @@ import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.Quest;
 import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.targeted.QuestTarget;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Target",
+		ident = "AreaTarget",
+		description = "Represents players in a certain area.",
+		arguments = { "X", "Y", "Z", "Radius" },
+		typeArguments = { DocArgType.FLOAT, DocArgType.FLOAT, DocArgType.FLOAT, DocArgType.FLOAT }
+		)
 public class AreaTarget extends QuestTarget {
 	
 	private static final long serialVersionUID = 4355616627742684553L;

@@ -6,7 +6,15 @@ import java.util.Map;
 
 import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.common.quest.v1.V1Parser;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Event",
+		description = "Event Handler.",
+		arguments = { },
+		typeArguments = { },
+		hide = true
+		)
 public class EventHandler implements V1Parser {
 	
 	@Override

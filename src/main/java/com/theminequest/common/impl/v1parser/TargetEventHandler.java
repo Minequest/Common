@@ -6,7 +6,16 @@ import java.util.Map;
 
 import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.common.quest.v1.V1Parser;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "TargetEvent",
+		description = "TargetEvent Handler",
+		arguments = { },
+		typeArguments = { },
+		hide = true
+		)
 public class TargetEventHandler implements V1Parser {
 	
 	public static final String TARGETED_EVENT_STR = "hKI5QgeHmXMOUD4lPRPz";

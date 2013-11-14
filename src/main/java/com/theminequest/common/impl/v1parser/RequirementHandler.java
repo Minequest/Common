@@ -7,7 +7,16 @@ import com.theminequest.api.Managers;
 import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.requirement.QuestRequirement;
 import com.theminequest.common.quest.v1.V1Parser;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Requirement",
+		description = "Requirement Handler.",
+		arguments = { },
+		typeArguments = { },
+		hide = true
+		)
 public class RequirementHandler implements V1Parser {
 	
 	/*

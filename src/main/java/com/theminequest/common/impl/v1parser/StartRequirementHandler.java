@@ -4,7 +4,15 @@ import java.util.List;
 
 import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.common.quest.v1.V1Parser;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "StartReq",
+		description = "Set requirements for starting this quest.",
+		arguments = { "Requirement IDs" },
+		typeArguments = { DocArgType.STRARRAY }
+		)
 public class StartRequirementHandler implements V1Parser {
 	
 	@Override

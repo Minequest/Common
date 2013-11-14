@@ -22,7 +22,16 @@ import com.theminequest.api.platform.MQItemStack;
 import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.requirement.QuestRequirement;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Requirement",
+		ident = "HasItemRequirement",
+		description = "Check if the player has an item of specified damage and quantity.",
+		arguments = { "Item", "Damage", "Qty" },
+		typeArguments = { DocArgType.STRING, DocArgType.INT, DocArgType.INT }
+		)
 public class HasItemRequirement extends QuestRequirement {
 	
 	/**

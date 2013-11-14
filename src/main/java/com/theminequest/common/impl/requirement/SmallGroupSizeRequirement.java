@@ -23,7 +23,16 @@ import com.theminequest.api.group.Group;
 import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.requirement.QuestRequirement;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Requirement",
+		ident = "SmallGroupSizeRequirement",
+		description = "Check if the group size is equal or less than this requirement.",
+		arguments = { "Group Size" },
+		typeArguments = { DocArgType.INT }
+		)
 public class SmallGroupSizeRequirement extends QuestRequirement {
 	
 	/**

@@ -7,8 +7,16 @@ import com.theminequest.api.Managers;
 import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.requirement.QuestRequirement;
 import com.theminequest.common.quest.v1.V1Parser;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
 @Deprecated
+@V1Documentation(
+		type = "Repeatable",
+		description = "Determine whether this quest is repeatable.",
+		arguments = { "Repeatable?" },
+		typeArguments = { DocArgType.BOOL }
+		)
 public class RepeatableHandler implements V1Parser {
 	
 	@Override

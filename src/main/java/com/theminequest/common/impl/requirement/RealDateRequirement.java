@@ -26,7 +26,16 @@ import java.util.Date;
 import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.QuestDetails;
 import com.theminequest.api.requirement.QuestRequirement;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Requirement",
+		ident = "RealDateRequirement",
+		description = "Allow only between certain dates. We interpret the dates specified in SHORT style - see the Java API for more information.",
+		arguments = { "Before Date (SHORT style)", "After Date (SHORT style)" },
+		typeArguments = { DocArgType.STRING, DocArgType.STRING }
+		)
 public class RealDateRequirement extends QuestRequirement {
 	
 	/**
