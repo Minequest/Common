@@ -2,7 +2,16 @@ package com.theminequest.common.impl.event;
 
 import com.theminequest.api.CompleteStatus;
 import com.theminequest.api.quest.event.DelayedQuestEvent;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Event",
+		ident = "FailQuestEvent",
+		description = "Ends a quest, marking it as failed.",
+		arguments = { "Delay" },
+		typeArguments = { DocArgType.INT }
+		)
 public class FailQuestEvent extends DelayedQuestEvent {
 	
 	private long delay;

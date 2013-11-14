@@ -27,7 +27,16 @@ import com.theminequest.api.platform.ChatColor;
 import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.event.DelayedQuestEvent;
 import com.theminequest.api.util.ChatUtils;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Event",
+		ident = "MessageEvent",
+		description = "Message the entire party on the quest.",
+		arguments = { "Delay", "Message to Send" },
+		typeArguments = { DocArgType.INT, DocArgType.STRING }
+		)
 public class MessageEvent extends DelayedQuestEvent {
 	
 	private String message;

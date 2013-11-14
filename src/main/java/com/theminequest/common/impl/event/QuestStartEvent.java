@@ -27,7 +27,16 @@ import com.theminequest.api.quest.event.DelayedQuestEvent;
 import com.theminequest.api.statistic.LogStatus;
 import com.theminequest.api.statistic.QuestStatisticUtils;
 import com.theminequest.api.statistic.QuestStatisticUtils.QSException;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Event",
+		ident = "QuestStartEvent",
+		description = "Start another quest in the midst of this one.",
+		arguments = { "Delay", "Quest to Start", "Block on Completion", "Next Task" },
+		typeArguments = { DocArgType.INT, DocArgType.STRING, DocArgType.BOOL, DocArgType.INT }
+		)
 public class QuestStartEvent extends DelayedQuestEvent {
 	
 	private long delay;

@@ -28,7 +28,16 @@ import com.theminequest.api.platform.MQItemStack;
 import com.theminequest.api.platform.MQMaterial;
 import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.event.QuestEvent;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Event",
+		ident = "RewardItemEvent",
+		description = "Give a set of items to each player in the party.",
+		arguments = { "Next Task", "ITEM_NAME,AMOUNT" },
+		typeArguments = { DocArgType.INT, DocArgType.STRARRAY }
+		)
 public class RewardItemEvent extends QuestEvent {
 	
 	private int taskid;

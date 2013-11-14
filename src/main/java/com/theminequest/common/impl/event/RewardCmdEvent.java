@@ -25,7 +25,16 @@ import com.theminequest.api.Managers;
 import com.theminequest.api.group.Group;
 import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.event.QuestEvent;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Event",
+		ident = "RewardCmdEvent",
+		description = "Execute a set of commands for all players, replacing %p with each player.",
+		arguments = { "Next Task", "Commands" },
+		typeArguments = { DocArgType.INT, DocArgType.STRARRAY }
+		)
 public class RewardCmdEvent extends QuestEvent {
 	
 	private int taskid;

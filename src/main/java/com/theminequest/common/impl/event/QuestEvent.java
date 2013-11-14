@@ -2,7 +2,16 @@ package com.theminequest.common.impl.event;
 
 import com.theminequest.api.CompleteStatus;
 import com.theminequest.api.quest.event.DelayedQuestEvent;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Event",
+		ident = "QuestEvent",
+		description = "Activate another task after a specified delay.",
+		arguments = { "Delay", "Task to Activate" },
+		typeArguments = { DocArgType.INT, DocArgType.INT }
+		)
 public class QuestEvent extends DelayedQuestEvent {
 	
 	private long milliseconds;

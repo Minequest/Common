@@ -21,6 +21,8 @@ package com.theminequest.common.impl.event;
 import com.theminequest.api.CompleteStatus;
 import com.theminequest.api.quest.event.QuestEvent;
 import com.theminequest.api.quest.event.UserQuestEvent;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
 /**
  * Make an entry appear in Current Tasks. This allows
@@ -29,6 +31,13 @@ import com.theminequest.api.quest.event.UserQuestEvent;
  * automatic completion of events due to a manual
  * specification inside V2Task.</b>
  */
+@V1Documentation(
+		type = "Event",
+		ident = "NameEvent",
+		description = "Add an entry to Current Tasks.",
+		arguments = { "Task" },
+		typeArguments = { DocArgType.STRING }
+		)
 public class NameEvent extends QuestEvent implements UserQuestEvent {
 	
 	private String task;

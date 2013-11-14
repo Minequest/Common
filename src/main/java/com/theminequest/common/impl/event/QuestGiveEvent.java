@@ -24,7 +24,16 @@ import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.event.DelayedQuestEvent;
 import com.theminequest.api.statistic.QuestStatisticUtils;
 import com.theminequest.api.statistic.QuestStatisticUtils.QSException;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Event",
+		ident = "QuestGiveEvent",
+		description = "Give a quest to the quest owner.",
+		arguments = { "Delay", "Quest to Give" },
+		typeArguments = { DocArgType.INT, DocArgType.STRING }
+		)
 public class QuestGiveEvent extends DelayedQuestEvent {
 	
 	private long delay;

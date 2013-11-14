@@ -23,7 +23,16 @@ import com.theminequest.api.Managers;
 import com.theminequest.api.group.Group;
 import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.event.DelayedQuestEvent;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Event",
+		ident = "HealthEvent",
+		description = "Set the health of the whole party to a certain amount.",
+		arguments = { "Delay", "Percentile of Health (0-100)" },
+		typeArguments = { DocArgType.INT, DocArgType.FLOAT }
+		)
 public class HealthEvent extends DelayedQuestEvent {
 	
 	private long delay;
@@ -62,7 +71,7 @@ public class HealthEvent extends DelayedQuestEvent {
 	public CompleteStatus action() {
 		Group g = Managers.getGroupManager().get(getQuest());
 		for (MQPlayer p : g.getMembers())
-			p.setHealth(p.getMaxHealth() * percentile);
+			p.setHealth(p.getMaxHealth() * (percentile/100));
 		return CompleteStatus.SUCCESS;
 	}
 	

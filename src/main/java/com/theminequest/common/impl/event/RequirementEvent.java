@@ -23,7 +23,16 @@ import com.theminequest.api.Managers;
 import com.theminequest.api.platform.entity.MQPlayer;
 import com.theminequest.api.quest.QuestDetailsUtils;
 import com.theminequest.api.quest.event.DelayedQuestEvent;
+import com.theminequest.doc.DocArgType;
+import com.theminequest.doc.V1Documentation;
 
+@V1Documentation(
+		type = "Event",
+		ident = "RequirementEvent",
+		description = "Check to see if a requirement is met.",
+		arguments = { "Delay", "Requirement ID", "Next Task if Met", "Next Task if not met" },
+		typeArguments = { DocArgType.INT, DocArgType.INT, DocArgType.INT, DocArgType.INT }
+		)
 public class RequirementEvent extends DelayedQuestEvent {
 	
 	private long delay;
