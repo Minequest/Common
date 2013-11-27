@@ -38,6 +38,7 @@ import com.theminequest.common.impl.event.QuestStartEvent;
 import com.theminequest.common.impl.event.RequirementEvent;
 import com.theminequest.common.impl.event.RewardCmdEvent;
 import com.theminequest.common.impl.event.RewardItemEvent;
+import com.theminequest.common.impl.event.SetSpawnEvent;
 import com.theminequest.common.impl.event.TaskEvent;
 import com.theminequest.common.quest.event.EventManager;
 
@@ -84,6 +85,7 @@ public class V1EventManager implements EventManager {
 		addEvent(RequirementEvent.class);
 		addEvent(RewardCmdEvent.class);
 		addEvent(RewardItemEvent.class);
+		addEvent(SetSpawnEvent.class);
 		addEvent(TaskEvent.class);
 	}
 
