@@ -135,6 +135,27 @@ public class JsTask implements QuestTask {
 						
 						// evaluate
 						Function f = (Function) (global.get("main", global));
+						if (f == Function.NOT_FOUND) {
+							synchronized (statusLock) {
+								status = CompleteStatus.ERROR;
+							}
+							
+							Managers.logf(Level.SEVERE, "[ECMA] In evaluating %s/%s: no such function main", quest.getQuestOwner(), quest.getDetails().getName());
+							for (MQPlayer player : Managers.getGroupManager().get(getQuest()).getMembers())
+								player.sendMessage(Managers.getPlatform().chatColor().RED() + "error: Unknown entry to quest; no main");
+							
+							Managers.getPlatform().scheduleSyncTask(new Runnable() {
+								
+								@Override
+								public void run() {
+									completed();
+								}
+								
+							});
+							return;
+
+						}
+						
 						Double result = null;
 						try {
 							if (continuation == null)
