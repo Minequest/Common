@@ -166,7 +166,7 @@ public class JsTask implements QuestTask {
 							// script paused
 							continuation = pending;
 							return;
-						} catch (EcmaError err) {
+						} catch (Exception err) {
 							synchronized (statusLock) {
 								status = CompleteStatus.ERROR;
 							}
